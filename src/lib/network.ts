@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import crypto = require('crypto');
 import * as dotenv from 'dotenv';
 import axios, { AxiosInstance } from 'axios';
+import { Console } from 'node:console';
 
 dotenv.config();
 
@@ -10,7 +11,7 @@ const ACCESS_KEY: string = process.env.ACCESS_KEY || '';
 const SECRET_KEY: string = process.env.SECRET_KEY || '';
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: 'https://api.upbit.com/v1',
+  baseURL: 'https://api.upbit.com',
 });
 
 const generateAuthorizationToken = (params: any | undefined): string => {
@@ -58,8 +59,7 @@ axiosInstance.interceptors.request.use(
     const params: any[] = config.params ? config.params : config.data;
     const authorizationToken = generateAuthorizationToken(params);
 
-    config.headers.Authoirzation = authorizationToken;
-
+    config.headers.Authorization = authorizationToken;
     return config;
   },
   (error) => {
