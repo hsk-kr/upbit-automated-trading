@@ -213,5 +213,5 @@ export const AreMostMarketsRise = (dataSet: MarketDataSet) => {
     if (data.upCnt > 0) numOfRisedMarkets += 1;
   }
 
-  return numOfRisedMarkets / dataKeys.length >= 0.7;
+  return numOfRisedMarkets / dataKeys.length >= 0.3;
 };
