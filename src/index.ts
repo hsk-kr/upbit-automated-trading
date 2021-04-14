@@ -8,7 +8,7 @@ import {
 } from './lib/upbit-bot';
 import { fetchAccounts } from './lib/upbit.api';
 
-const CHECK_DELAY = 1000 * 60;
+const CHECK_DELAY = 1000 * 60 * 1;
 let dataSet = {};
 let krw = 0;
 
@@ -24,7 +24,8 @@ const bot = async () => {
 
     krw = Number(krwAccount[0].balance);
 
-    if (krw >= MIN_KRW_WHEN_BID && AreMostMarketsRise(dataSet)) {
+    //if (krw >= MIN_KRW_WHEN_BID && AreMostMarketsRise(dataSet)) {
+    if (AreMostMarketsRise(dataSet)) {
       console.log('[EXECUTE] Most markets are rise.');
       await bidRiseMarkets(dataSet);
     } else {

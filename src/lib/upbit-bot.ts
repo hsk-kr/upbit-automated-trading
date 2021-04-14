@@ -16,10 +16,10 @@ export const MIN_KRW_WHEN_BID = 100000;
 export const GOOD_TO_BUY_MIN_PRICE = 10;
 export const GOOD_TO_BUY_MAX_PRICE = 10000;
 
-export const isMarketRise = (data: IMarketData) => data.upCnt >= 10;
+export const isMarketRise = (data: IMarketData) => data.upCnt >= 5;
 
 export const isMarketDeclined = (data: IMarketData) =>
-  data.downCnt >= 5 ||
+  data.downCnt >= 2 ||
   (data.bidHistory &&
     data.price !== Number(data.bidHistory.res.price) &&
     (Number(data.bidHistory.res.price) - data.price) /
@@ -119,6 +119,13 @@ export const askDecliningMarkets = async (dataSet: MarketDataSet) => {
           data.price
         } volume: ${data.bidHistory.amount.toString()}`
       );
+      console.log(
+        `[PROFIT EXPECTATION] bid price:${
+          data.bidHistory.res.price
+        } ask price:${data.price} diff price: ${
+          Number(data.bidHistory.res.price) - data.price
+        } `
+      );
 
       //! await order({
       //   market: data.bidHistory.res.market,
@@ -142,9 +149,10 @@ export const bidRiseMarkets = async (dataSet: MarketDataSet) => {
 
   for (const dataKey of dataKeys) {
     const data = dataSet[dataKey];
+    console.log(data);
 
     // If the market is rise and you didn't bid it yet
-    if (data.upCnt >= 10 && !data.bidHistory) {
+    if (isMarketRise(data) && !data.bidHistory) {
       const volume = calcBidAmount(data.price).toString();
 
       console.log(
@@ -157,10 +165,10 @@ export const bidRiseMarkets = async (dataSet: MarketDataSet) => {
           uuid: 'cdd92199-2897-4e14-9448-f923320408ad',
           side: 'bid',
           ord_type: 'limit',
-          price: '100.0',
+          price: data.price.toString(),
           avg_price: '0.0',
           state: 'wait',
-          market: 'KRW-BTC',
+          market: data.market,
           created_at: '2018-04-10T15:42:23+09:00',
           volume: '0.01',
           remaining_volume: '0.01',
