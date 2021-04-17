@@ -24,7 +24,7 @@ export const isMarketDeclined = (data: IMarketData) =>
     data.price !== Number(data.bidHistory.res.price) &&
     (Number(data.bidHistory.res.price) - data.price) /
       Number(data.bidHistory.res.price) >=
-      0.1);
+      0.05);
 
 export const calcBidAmount = (price: number) =>
   Math.floor(MIN_KRW_WHEN_BID / price);
@@ -221,5 +221,5 @@ export const AreMostMarketsRise = (dataSet: MarketDataSet) => {
     if (data.upCnt > 0) numOfRisedMarkets += 1;
   }
 
-  return numOfRisedMarkets / dataKeys.length >= 0.3;
+  return numOfRisedMarkets / dataKeys.length >= 0.7;
 };
